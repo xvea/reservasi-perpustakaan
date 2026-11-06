@@ -1,0 +1,45 @@
+
+[
+  {
+        "id": "B01",
+        "nama": "Dasar HTML dan CSS",
+        "kategori": "Frontend",
+        "harga": 15000,
+        "stok": 3
+  },
+  {
+        "id": "B02",
+        "nama": "React untuk Pemula",
+        "kategori": "Frontend",
+        "harga": 25000,
+        "stok": 2
+  },
+  {
+        "id": "B03",
+        "nama": "JavaScript Praktis",
+        "kategori": "Frontend",
+        "harga": 20000,
+        "stok": 0
+  },
+    {
+        "id": "B04",
+        "nama": "Dasar Basis Data",
+        "kategori": "Backend",
+        "harga": 18000,
+        "stok": 4
+  },
+  {
+        "id": "B05",
+        "nama": "Desain Antarmuka",
+        "kategori": "Desain",
+        "harga": 22000,
+        "stok": 2
+  },
+  {
+        "id": "B06",
+        "nama": "Mengenal API Web",
+        "kategori": "Backend",
+        "harga": 20000,
+        "stok": 1
+  }
+]
