@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { fetchBooks } from "./services/bookService";
 
 function App() {
   const [books, setBooks] = useState([]);
@@ -8,28 +9,22 @@ function App() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("Semua");
 
-  const fetchBooks = async () => {
-    try {
-      setLoading(true);
-      setError("");
-
-      const response = await fetch("/data/perpustakaan.json");
-
-      if (!response.ok) {
-        throw new Error("Gagal ambil data buku");
-      }
-
-      const data = await response.json();
-      setBooks(data);
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchBooks();
+    const loadBooks = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const data = await fetchBooks();
+        setBooks(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadBooks();
   }, []);
 
   const categories = useMemo(() => {
@@ -52,14 +47,6 @@ function App() {
     });
   }, [books, search, category]);
 
-  const getReservedQuantity = (bookId) => {
-    const reservation = reservations.find(
-      (book) => book.id === bookId
-    );
-
-    return reservation ? reservation.jumlah : 0;
-  };
-
   const totalReserved = reservations.reduce(
     (total, book) => total + book.jumlah,
     0
@@ -67,7 +54,7 @@ function App() {
 
   const handleAdd = (book) => {
     if (book.stok === 0) {
-      setError("Buku tidak tersedia untuk reservasi");
+      setError("Buku tersebut tidak tersedia");
       return;
     }
 
@@ -97,6 +84,7 @@ function App() {
         )
       );
 
+      setError("");
       return;
     }
 
@@ -134,21 +122,21 @@ function App() {
         };
       })
     );
+
+    setError("");
   };
 
   const handleDecrease = (bookId) => {
     setReservations((prev) =>
       prev
-        .map((item) => {
-          if (item.id !== bookId) {
-            return item;
-          }
-
-          return {
-            ...item,
-            jumlah: item.jumlah - 1,
-          };
-        })
+        .map((item) =>
+          item.id === bookId
+            ? {
+                ...item,
+                jumlah: item.jumlah - 1,
+              }
+            : item
+        )
         .filter((item) => item.jumlah > 0)
     );
 
