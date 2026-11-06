@@ -1,6 +1,9 @@
 
 function ReservationList({
     reservations,
+    onIncrease,
+    onDecrease,
+    onRemove,
     error
 }) {
     return (
